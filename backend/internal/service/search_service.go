@@ -60,9 +60,11 @@ type versionMeta struct {
 	VersionName string
 	ThemeName   string
 	ThemeSlug   string
+	AccessMode  string // 主题访问模式，用于搜索结果过滤
 }
 
 // Search 全文搜索已发布文档页，返回含总数的分页响应
+// 安全：搜索结果自动排除需登录/验证码才能访问的主题内容
 func (s *SearchService) Search(ctx context.Context, req *dto.SearchReq) (*dto.SearchResponse, *errcode.AppError) {
 	if req.Page <= 0 {
 		req.Page = 1
@@ -120,6 +122,10 @@ func (s *SearchService) Search(ctx context.Context, req *dto.SearchReq) (*dto.Se
 		meta := versionMap[p.VersionID]
 		themeName, versionName, themeSlug := "", "", ""
 		if meta != nil {
+			// 搜索结果安全过滤：排除需登录/验证码才能访问的主题页面
+			if meta.AccessMode == "login" || meta.AccessMode == "code" {
+				continue
+			}
 			themeName = meta.ThemeName
 			versionName = meta.VersionName
 			themeSlug = meta.ThemeSlug
@@ -180,6 +186,7 @@ func (s *SearchService) fetchVersionMeta(ctx context.Context, versionIDs []primi
 		if t, ok := themeMap[v.ThemeID]; ok {
 			meta.ThemeName = t.Name
 			meta.ThemeSlug = t.Slug
+			meta.AccessMode = t.AccessMode
 		}
 		out[vid] = meta
 	}

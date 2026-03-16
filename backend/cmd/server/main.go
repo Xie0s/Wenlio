@@ -73,6 +73,7 @@ func main() {
 		middleware.RequestID(),
 		middleware.Logger(),
 		middleware.CORS(),
+		middleware.SecurityHeaders(),
 		middleware.Recovery(),
 		cacheControl(),
 	)

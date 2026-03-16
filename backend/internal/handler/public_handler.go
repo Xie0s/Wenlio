@@ -284,10 +284,17 @@ func (h *PublicHandler) GetRawMarkdown(c *gin.Context) {
 		return
 	}
 
+	// 安全限制：raw 响应体大小上限 2MB，防止超大页面被滥用消耗带宽
+	const maxRawSize = 2 * 1024 * 1024
+	content := page.Content
+	if len(content) > maxRawSize {
+		content = content[:maxRawSize] + "\n\n<!-- truncated: content exceeds 2MB limit -->"
+	}
+
 	// 返回纯文本 Markdown
 	c.Header("Content-Type", "text/plain; charset=utf-8")
 	c.Header("X-Content-Type-Options", "nosniff")
-	c.String(200, page.Content)
+	c.String(200, content)
 }
 
 // GetRawDirectory 获取主题版本的原始 Markdown 目录（所有章节和页面的 raw 链接）

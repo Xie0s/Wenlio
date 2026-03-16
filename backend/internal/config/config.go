@@ -5,6 +5,7 @@
 package config
 
 import (
+	"os"
 	"sync"
 
 	"github.com/spf13/viper"
@@ -58,7 +59,11 @@ var (
 	once sync.Once
 )
 
-// Load 加载配置文件，仅在首次调用时执行
+// Load 加载配置文件，仅在首次调用时执行。
+// 敏感配置项支持环境变量覆盖（优先级高于配置文件）：
+//   - JWT_SECRET         → jwt.secret
+//   - MONGODB_PASSWORD   → mongodb.password
+//   - SEED_ADMIN_PASSWORD → seed.super_admin_password
 func Load(configPath string) (*Config, error) {
 	var err error
 	once.Do(func() {
@@ -72,11 +77,32 @@ func Load(configPath string) (*Config, error) {
 			err = e
 			return
 		}
+
+		// 环境变量覆盖敏感配置项
+		if v := getEnv("JWT_SECRET"); v != "" {
+			cfg.JWT.Secret = v
+		}
+		if v := getEnv("MONGODB_PASSWORD"); v != "" {
+			cfg.MongoDB.Password = v
+		}
+		if v := getEnv("SEED_ADMIN_PASSWORD"); v != "" {
+			cfg.Seed.SuperAdminPassword = v
+		}
 	})
 	return cfg, err
+}
+
+// getEnv 读取环境变量（仅内部使用）
+func getEnv(key string) string {
+	return os.Getenv(key)
 }
 
 // Get 获取全局配置实例（需先调用 Load）
 func Get() *Config {
 	return cfg
+}
+
+// SetForTest 仅用于单元测试直接注入配置，跳过文件加载
+func SetForTest(c *Config) {
+	cfg = c
 }

@@ -8,6 +8,7 @@ import (
 	"context"
 	"fmt"
 	"mime/multipart"
+	"net/http"
 	"path/filepath"
 	"strings"
 	"time"
@@ -28,6 +29,34 @@ const localStorageLimitBytes int64 = 100 * 1024 * 1024
 
 // 最大单文件大小 50MB
 const maxFileSize = 50 * 1024 * 1024
+
+// detectFileMIME 通过文件内容的 magic bytes 检测真实 MIME 类型。
+// 优先使用 http.DetectContentType（基于文件头512字节），
+// 如果检测结果为 application/octet-stream 且客户端提供了有效 Content-Type 则回退使用客户端声明。
+func detectFileMIME(file *multipart.FileHeader) (string, error) {
+	src, err := file.Open()
+	if err != nil {
+		return "", err
+	}
+	defer src.Close()
+
+	// 读取文件头 512 字节用于 MIME 检测
+	buf := make([]byte, 512)
+	n, err := src.Read(buf)
+	if err != nil && n == 0 {
+		return "", err
+	}
+
+	detected := http.DetectContentType(buf[:n])
+	// http.DetectContentType 对未知类型返回 application/octet-stream，
+	// 此时回退使用客户端声明的 Content-Type（如有）
+	if detected == "application/octet-stream" {
+		if ct := file.Header.Get("Content-Type"); ct != "" {
+			return ct, nil
+		}
+	}
+	return detected, nil
+}
 
 // MediaService 媒体文件业务
 type MediaService struct {
@@ -59,9 +88,10 @@ func (s *MediaService) Upload(ctx context.Context, tenantID string, userID primi
 		return nil, errcode.ErrUploadFileTooLarge
 	}
 
-	mimeType := file.Header.Get("Content-Type")
-	if mimeType == "" {
-		mimeType = "application/octet-stream"
+	// 通过读取文件头部 magic bytes 检测真实 MIME 类型，防止 Content-Type 伪造
+	mimeType, detectErr := detectFileMIME(file)
+	if detectErr != nil {
+		return nil, errcode.ErrInternalServer.Wrap(detectErr)
 	}
 
 	// 获取租户存储配置

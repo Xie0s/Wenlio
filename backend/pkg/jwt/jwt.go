@@ -29,6 +29,7 @@ func GenerateToken(userID, tenantID, role string) (string, error) {
 		TenantID: tenantID,
 		Role:     role,
 		RegisteredClaims: jwtv5.RegisteredClaims{
+			Issuer:    "docplatform",
 			IssuedAt:  jwtv5.NewNumericDate(now),
 			ExpiresAt: jwtv5.NewNumericDate(now.Add(time.Duration(cfg.JWT.ExpireHours) * time.Hour)),
 		},
@@ -47,6 +48,10 @@ func ParseToken(tokenStr string) (*Claims, error) {
 		return nil, err
 	}
 	if claims, ok := token.Claims.(*Claims); ok && token.Valid {
+		// 拒绝非 docplatform 签发的 token（如 ThemeAccess token）被误用为主认证 token
+		if claims.Issuer != "docplatform" {
+			return nil, jwtv5.ErrTokenInvalidClaims
+		}
 		return claims, nil
 	}
 	return nil, jwtv5.ErrTokenInvalidClaims

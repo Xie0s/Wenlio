@@ -8,6 +8,7 @@ import (
 	"docplatform/internal/handler"
 	"docplatform/internal/middleware"
 	"docplatform/pkg/constants"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -191,7 +192,7 @@ func RegisterRoutes(r *gin.Engine) {
 		public.GET("/pages/:page_id", middleware.OptionalJWTAuth(), publicHandler.GetPage)
 		public.GET("/pages/:page_id/comments", middleware.OptionalJWTAuth(), publicHandler.ListComments)
 		public.POST("/pages/:page_id/comments", middleware.OptionalJWTAuth(), publicHandler.SubmitComment)
-		public.POST("/themes/:theme_id/verify-code", publicHandler.VerifyThemeAccessCode)                               // 主题访问码校验
+		public.POST("/themes/:theme_id/verify-code", middleware.IPRateLimit(10, 1*time.Minute), publicHandler.VerifyThemeAccessCode)                               // 主题访问码校验（限速：每分钟10次/IP）
 		public.POST("/themes/:theme_id/issue-token", middleware.OptionalJWTAuth(), publicHandler.IssueThemeAccessToken) // 已登录用户签发主题访问 token
 		public.GET("/search", publicHandler.Search)
 	}

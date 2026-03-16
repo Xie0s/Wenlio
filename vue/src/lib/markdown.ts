@@ -19,8 +19,12 @@ let md: MarkdownIt | null = null
 let initPromise: Promise<void> | null = null
 
 // DOMPurify 净化配置（renderMarkdown / renderMarkdownSync 共用）
+// 安全策略：
+//   - 不允许未受限的 iframe（移除 ADD_TAGS 中的 iframe）
+//   - input 仅允许 checkbox 类型的 task list
+//   - 禁止 form / script / style / object / embed 等危险标签（DOMPurify 默认行为）
 const PURIFY_OPTIONS = {
-  ADD_TAGS: ['iframe', 'input'],
+  ADD_TAGS: ['input'],
   ADD_ATTR: [
     'target', 'rel', 'class', 'style', 'type', 'checked', 'disabled', 'width',
     // 图片节点自定义属性
@@ -30,6 +34,7 @@ const PURIFY_OPTIONS = {
     // 文件附件节点属性
     'data-file-size', 'data-mime-type', 'data-layout', 'data-file-name',
   ],
+  FORBID_TAGS: ['iframe', 'form', 'object', 'embed'],
 }
 
 // 自定义容器类型：tip / warning / danger / info

@@ -1,0 +1,23 @@
+server:
+  port: 1501
+  env: development # development / production
+
+mongodb:
+  host: 36.138.207.30
+  port: 27017
+  database: doc
+  username: doc
+  password: 3eEJzTxXn4b26nA8
+  auth_database: doc
+
+jwt:
+  secret: "docplatform-dev-secret-change-in-production"
+  expire_hours: 24
+
+storage:
+  type: local # local | minio
+  local_path: ./uploads
+
+seed:
+  super_admin_username: weixun
+  super_admin_password: microswift.1231

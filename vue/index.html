@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="preconnect" href="https://ziyuan-1302808601.cos.ap-chengdu.myqcloud.com" crossorigin />
+  <link rel="dns-prefetch" href="//ziyuan-1302808601.cos.ap-chengdu.myqcloud.com" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>微讯云信息</title>
+  <script>
+    (function () {
+      try {
+        var mode = localStorage.getItem('theme') || 'system'
+        var isDark = mode === 'dark' || (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        var root = document.documentElement
+        root.classList.toggle('dark', isDark)
+        root.setAttribute('data-theme', isDark ? 'dark' : 'light')
+      } catch (_) {
+        // ignore
+      }
+    })()
+  </script>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>

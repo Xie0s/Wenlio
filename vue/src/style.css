@@ -1,0 +1,482 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+@import "./assets/markdown.css";
+
+@font-face {
+  font-family: "AlibabaPuHuiTi";
+  src: url("https://ziyuan-1302808601.cos.ap-chengdu.myqcloud.com/fonts/AlibabaPuHuiTi/AlibabaPuHuiTi-3-45-Light.woff2")
+    format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "AlibabaPuHuiTi";
+  src: url("https://ziyuan-1302808601.cos.ap-chengdu.myqcloud.com/fonts/AlibabaPuHuiTi/AlibabaPuHuiTi-3-55-Regular.woff2")
+    format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "AlibabaPuHuiTi";
+  src: url("https://ziyuan-1302808601.cos.ap-chengdu.myqcloud.com/fonts/AlibabaPuHuiTi/AlibabaPuHuiTi-3-65-Medium.woff2")
+    format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-sans:
+    "AlibabaPuHuiTi", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial,
+    sans-serif;
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --radius: 0.65rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.141 0.005 285.823);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.141 0.005 285.823);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.141 0.005 285.823);
+  --primary: oklch(0.488 0.243 264.376);
+  --primary-foreground: oklch(0.97 0.014 254.604);
+  --secondary: oklch(0.967 0.001 286.375);
+  --secondary-foreground: oklch(0.21 0.006 285.885);
+  --muted: oklch(0.967 0.001 286.375);
+  --muted-foreground: oklch(0.552 0.016 285.938);
+  --accent: oklch(0.967 0.001 286.375);
+  --accent-foreground: oklch(0.21 0.006 285.885);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.92 0.004 286.32);
+  --input: oklch(0.92 0.004 286.32);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.141 0.005 285.823);
+  --sidebar-primary: oklch(0.546 0.245 262.881);
+  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
+  --sidebar-accent: oklch(0.967 0.001 286.375);
+  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+  --sidebar-border: oklch(0.92 0.004 286.32);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+@theme inline {
+  --font-sans:
+    "AlibabaPuHuiTi", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial,
+    sans-serif;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+.dark {
+  --background: oklch(0.12 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.18 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.21 0.006 285.885);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.488 0.243 264.376);
+  --primary-foreground: oklch(0.97 0.014 254.604);
+  --secondary: oklch(0.274 0.006 286.033);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.274 0.006 286.033);
+  --muted-foreground: oklch(0.705 0.015 286.067);
+  --accent: oklch(0.274 0.006 286.033);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+  --sidebar: oklch(0.21 0.006 285.885);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.623 0.214 259.815);
+  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
+  --sidebar-accent: oklch(0.274 0.006 286.033);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    font-family: var(--font-sans);
+    scrollbar-width: none;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* 首页锚点区块预留顶部导航高度（h-14 = 56px），加 8px 呼吸间距 */
+  section[id] {
+    scroll-margin-top: 4rem;
+  }
+
+  /* 隐藏 Webkit 滚动条（Chrome / Safari / Edge） */
+  *::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
+
+/* =============================================
+   滚动条显示工具类
+   使用方式：在需要显示滚动条的元素上添加 .scrollbar-visible 即可覆盖全局隐藏
+   ============================================= */
+
+.scrollbar-visible {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.5 0 0 / 25%) transparent;
+}
+
+.scrollbar-visible::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-visible::-webkit-scrollbar-thumb {
+  background: oklch(0.5 0 0 / 25%);
+  border-radius: 3px;
+}
+
+.scrollbar-visible::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* =============================================
+   玻璃质感（Glassmorphism）工具类
+   使用方式：在元素上添加 .glass 即可
+
+   设计原则（扁平化）：
+   - 均匀半透明底色，无渐变光泽、无斜面高光
+   - backdrop-filter 承担全部"玻璃感"
+   - 无外部投影，保持平面层次
+
+   注意：不设置 position / overflow，
+   避免覆盖 Tailwind 的 sticky / absolute / fixed 等工具类。
+   ============================================= */
+
+.glass {
+  border: 1px solid oklch(0 0 0 / 9%);
+  background: oklch(1 0 0 / 72%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
+  transition:
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.dark .glass {
+  background: oklch(0.2 0 0 / 60%);
+  border-color: oklch(1 0 0 / 10%);
+}
+
+/* View Transition 根层统一样式：用于主题切换时避免默认过渡叠加 */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* ============================================
+   Sonner Toast 毛玻璃样式
+   用于：通知提示（vue-sonner）
+   ============================================ */
+:root [data-sonner-toaster] [data-sonner-toast] {
+  background: oklch(1 0 0 / 60%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
+  border-radius: 1rem;
+  border: 1px solid oklch(0 0 0 / 8%);
+  outline: none;
+  box-shadow: none;
+}
+
+:root.dark [data-sonner-toaster] [data-sonner-toast] {
+  background: oklch(0.2 0.006 286 / 50%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
+  border-radius: 1rem;
+  border: 1px solid oklch(1 0 0 / 8%);
+  outline: none;
+  box-shadow: none;
+}
+
+/* Sonner 副文字（description）对比度增强 */
+:root [data-sonner-toaster] [data-sonner-toast] [data-description] {
+  color: oklch(0.2 0.005 285);
+}
+
+:root.dark [data-sonner-toaster] [data-sonner-toast] [data-description] {
+  color: oklch(0.88 0 0);
+}
+
+/* TOC 跳转标题高亮动效 */
+.toc-heading-highlight {
+  background-color: oklch(0.97 0.12 85 / 70%);
+  border-radius: 1rem;
+  padding-inline: 0.5rem;
+  padding-block: 0.125rem;
+  transition: background-color 0.8s ease;
+}
+
+.dark .toc-heading-highlight {
+  background-color: oklch(0.75 0.15 85 / 25%);
+}
+
+.toc-heading-highlight.toc-heading-highlight-fade {
+  background-color: transparent;
+}
+
+/* ============================================
+   个性化首页 Hero 入场动画
+   ============================================ */
+@keyframes hp-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hp-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-up {
+  animation: hp-fade-up 0.7s ease-out both;
+}
+
+.animate-fade-in {
+  animation: hp-fade-in 0.6s ease-out both;
+}
+
+/* Hero 打字机光标跳动 */
+@keyframes hero-cursor-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+.hero-cursor {
+  animation: hero-cursor-blink 1.06s step-start infinite;
+}
+
+/* ============================================
+   护眼模式（Eye Care）
+   由 DocReaderPage 管理，切换 body.eye-care
+   ============================================ */
+body.eye-care {
+  --background: oklch(0.96 0.025 140);
+  --foreground: oklch(0.25 0.06 140);
+  --card: oklch(0.94 0.025 140);
+  --card-foreground: oklch(0.25 0.06 140);
+  --popover: oklch(0.94 0.025 140);
+  --popover-foreground: oklch(0.25 0.06 140);
+  --muted: oklch(0.9 0.03 140);
+  --muted-foreground: oklch(0.5 0.05 140);
+  --accent: oklch(0.9 0.03 140);
+  --accent-foreground: oklch(0.25 0.06 140);
+  --border: oklch(0.84 0.05 140);
+  --input: oklch(0.84 0.05 140);
+  --sidebar: oklch(0.93 0.025 140);
+  --sidebar-foreground: oklch(0.25 0.06 140);
+  --sidebar-accent: oklch(0.88 0.04 140);
+  --sidebar-accent-foreground: oklch(0.25 0.06 140);
+  --sidebar-border: oklch(0.84 0.05 140);
+}
+
+/* 毛玻璃元素（Dock 等）背景覆盖 */
+body.eye-care .glass {
+  background: oklch(0.93 0.025 140 / 80%);
+  border-color: oklch(0.75 0.06 140 / 20%);
+}
+
+/* Shiki 代码块背景（高特异性覆盖 CSS 变量引用）*/
+body.eye-care .shiki,
+body.eye-care .shiki span {
+  background-color: oklch(0.92 0.03 140);
+}
+
+/* 护眼模式 - 暗色主题 */
+.dark body.eye-care {
+  --background: oklch(0.16 0.025 140);
+  --foreground: oklch(0.88 0.03 140);
+  --card: oklch(0.2 0.025 140);
+  --card-foreground: oklch(0.88 0.03 140);
+  --popover: oklch(0.2 0.025 140);
+  --popover-foreground: oklch(0.88 0.03 140);
+  --muted: oklch(0.24 0.03 140);
+  --muted-foreground: oklch(0.65 0.04 140);
+  --accent: oklch(0.24 0.03 140);
+  --accent-foreground: oklch(0.88 0.03 140);
+  --border: oklch(0.3 0.04 140);
+  --input: oklch(0.3 0.04 140);
+  --sidebar: oklch(0.18 0.025 140);
+  --sidebar-foreground: oklch(0.88 0.03 140);
+  --sidebar-accent: oklch(0.24 0.03 140);
+  --sidebar-accent-foreground: oklch(0.88 0.03 140);
+  --sidebar-border: oklch(0.3 0.04 140);
+}
+
+/* 毛玻璃元素 - 暗色护眼 */
+.dark body.eye-care .glass {
+  background: oklch(0.18 0.025 140 / 70%);
+  border-color: oklch(0.38 0.05 140 / 20%);
+}
+
+/* Shiki 代码块背景 - 暗色护眼 */
+.dark body.eye-care .shiki,
+.dark body.eye-care .shiki span {
+  background-color: oklch(0.2 0.03 140);
+}
+
+/* 行内代码背景 */
+body.eye-care code {
+  background-color: oklch(0.91 0.03 140);
+}
+.dark body.eye-care code {
+  background-color: oklch(0.22 0.03 140);
+}
+
+/* 表格头背景 */
+body.eye-care th {
+  background-color: oklch(0.91 0.03 140);
+}
+.dark body.eye-care th {
+  background-color: oklch(0.22 0.03 140);
+}
+
+/* 可视化编辑器代码块背景（高特异性覆盖 .visual-editor-wrapper .ProseMirror pre） */
+body.eye-care .visual-editor-wrapper .ProseMirror pre {
+  background-color: oklch(0.92 0.03 140);
+}
+.dark body.eye-care .visual-editor-wrapper .ProseMirror pre {
+  background-color: oklch(0.2 0.03 140);
+}
+
+/* 代码块复制按钮 */
+body.eye-care pre .code-copy-btn {
+  background: oklch(0.91 0.03 140 / 80%);
+  border-color: oklch(0.75 0.05 140 / 50%);
+}
+body.eye-care pre .code-copy-btn:hover {
+  background: oklch(0.87 0.04 140);
+}
+.dark body.eye-care pre .code-copy-btn {
+  background: oklch(0.22 0.03 140 / 80%);
+  border-color: oklch(0.38 0.05 140 / 50%);
+}
+.dark body.eye-care pre .code-copy-btn:hover {
+  background: oklch(0.28 0.04 140);
+}
+
+/* ============================================
+   Collapsible（章节展开/折叠）过渡动画
+   依赖 reka-ui 注入的 --reka-collapsible-content-height 变量
+   ============================================ */
+@keyframes collapsible-slide-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--reka-collapsible-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes collapsible-slide-up {
+  from {
+    height: var(--reka-collapsible-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+.collapsible-content {
+  overflow: hidden;
+}
+
+.collapsible-content[data-state="open"] {
+  animation: collapsible-slide-down 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.collapsible-content[data-state="closed"] {
+  animation: collapsible-slide-up 160ms cubic-bezier(0.4, 0, 1, 1);
+}

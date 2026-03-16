@@ -1,0 +1,458 @@
+/**
+ * assets/markdown.css - Markdown 渲染样式
+ * 职责：定义自定义容器（tip/warning/danger/info）样式和 Shiki 代码高亮主题切换
+ * 配合 @tailwindcss/typography 的 prose 类使用
+ */
+
+/* ============================================================
+   Shiki 双主题切换（CSS 变量方案）
+   亮色模式展示 github-light，暗色模式展示 github-dark
+   ============================================================ */
+
+.shiki,
+.shiki span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}
+
+.dark .shiki,
+.dark .shiki span {
+  color: var(--shiki-dark);
+  background-color: var(--shiki-dark-bg);
+}
+
+/* Shiki 代码块基础样式 */
+.shiki {
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  border: 1px solid var(--border);
+  tab-size: 2;
+  -moz-tab-size: 2;
+  white-space: pre;
+}
+
+/* ============================================================
+   自定义容器（Tip / Warning / Danger / Info）
+   ============================================================ */
+
+.custom-container {
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  border-left: 4px solid;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.custom-container-title {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+/* Tip */
+.custom-container.tip {
+  border-left-color: #10b981;
+  background-color: oklch(0.95 0.03 160);
+}
+
+.custom-container.tip .custom-container-title {
+  color: #059669;
+}
+
+.dark .custom-container.tip {
+  background-color: oklch(0.22 0.02 160);
+}
+
+.dark .custom-container.tip .custom-container-title {
+  color: #34d399;
+}
+
+/* Warning */
+.custom-container.warning {
+  border-left-color: #f59e0b;
+  background-color: oklch(0.96 0.04 85);
+}
+
+.custom-container.warning .custom-container-title {
+  color: #d97706;
+}
+
+.dark .custom-container.warning {
+  background-color: oklch(0.22 0.03 85);
+}
+
+.dark .custom-container.warning .custom-container-title {
+  color: #fbbf24;
+}
+
+/* Danger */
+.custom-container.danger {
+  border-left-color: #ef4444;
+  background-color: oklch(0.96 0.03 25);
+}
+
+.custom-container.danger .custom-container-title {
+  color: #dc2626;
+}
+
+.dark .custom-container.danger {
+  background-color: oklch(0.22 0.03 25);
+}
+
+.dark .custom-container.danger .custom-container-title {
+  color: #f87171;
+}
+
+/* Info */
+.custom-container.info {
+  border-left-color: #3b82f6;
+  background-color: oklch(0.96 0.03 250);
+}
+
+.custom-container.info .custom-container-title {
+  color: #2563eb;
+}
+
+.dark .custom-container.info {
+  background-color: oklch(0.22 0.03 250);
+}
+
+.dark .custom-container.info .custom-container-title {
+  color: #60a5fa;
+}
+
+/* ============================================================
+   标题内链接：继承标题颜色，不显示下划线（覆盖 prose-a: 系列 utility）
+   选择器特异性高于 Tailwind 生成的 .prose a，因此无需 !important
+   ============================================================ */
+
+.prose :is(h1, h2, h3, h4, h5, h6) a:not(.header-anchor),
+.prose :is(h1, h2, h3, h4, h5, h6) a:not(.header-anchor):hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ============================================================
+   标题锚点
+   ============================================================ */
+
+.header-anchor {
+  display: inline-block;
+  margin-left: 0.35em;
+  opacity: 0;
+  text-decoration: none;
+  color: var(--color-primary);
+  transition: opacity 0.15s;
+  font-weight: normal;
+}
+
+h1:hover .header-anchor,
+h2:hover .header-anchor,
+h3:hover .header-anchor,
+h4:hover .header-anchor {
+  opacity: 1;
+}
+
+/* ============================================================
+   prose 内的表格增强（横向滚动容器）
+   ============================================================ */
+
+.prose .table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 1rem 0;
+}
+
+.prose .table-wrapper table {
+  margin: 0;
+}
+
+.prose table {
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.prose th,
+.prose td {
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 0.75rem;
+}
+
+.prose th:last-child,
+.prose td:last-child {
+  border-right: none;
+}
+
+.prose tr:last-child td {
+  border-bottom: none;
+}
+
+.prose thead tr:first-child th:first-child {
+  border-top-left-radius: calc(1rem - 1px);
+}
+
+.prose thead tr:first-child th:last-child {
+  border-top-right-radius: calc(1rem - 1px);
+}
+
+.prose tbody tr:last-child td:first-child {
+  border-bottom-left-radius: calc(1rem - 1px);
+}
+
+.prose tbody tr:last-child td:last-child {
+  border-bottom-right-radius: calc(1rem - 1px);
+}
+
+/* 无 thead 时，第一行第一/最后个 td 也需要圆角 */
+.prose table:not(:has(thead)) tbody tr:first-child td:first-child {
+  border-top-left-radius: calc(1rem - 1px);
+}
+
+.prose table:not(:has(thead)) tbody tr:first-child td:last-child {
+  border-top-right-radius: calc(1rem - 1px);
+}
+
+.prose th {
+  background-color: var(--color-muted);
+  font-weight: 500;
+  text-align: left;
+}
+
+/* ============================================================
+   防止长单词/URL 溢出撑破布局（可继承，只需设在容器）
+   ============================================================ */
+
+.prose {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* 斜体：在全局 font-synthesis:none 场景下允许样式合成，确保预览可见 */
+.prose :is(em, i) {
+  font-style: italic;
+  font-synthesis: style;
+}
+
+/* ============================================================
+   统一正文行距（覆盖 Tailwind typography 的正文 line-height）
+   标题使用相对行高，避免固定 20px 在大字号下产生文字重叠
+   pre/code 排除在外，保留 .shiki 自身的 line-height: 1.7
+   ============================================================ */
+
+.prose :where(p, li, td, th, blockquote, dt, dd) {
+  line-height: 20px;
+}
+
+.prose :where(h1, h2, h3, h4, h5, h6) {
+  line-height: 1.3;
+}
+
+/* ============================================================
+   prose 内的图片
+   ============================================================ */
+
+.prose img {
+  border-radius: 0.75rem;
+  max-width: 100%;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+/* 图片圆角：通过 data-rounded 属性控制 */
+.prose img[data-rounded="none"] {
+  border-radius: 0;
+}
+
+.prose img[data-rounded="xl"] {
+  border-radius: 0.75rem;
+}
+
+.prose img[data-rounded="2xl"] {
+  border-radius: 1rem;
+}
+
+.prose img[data-rounded="3xl"] {
+  border-radius: 1.5rem;
+}
+
+/* 图片对齐：通过 data-align 属性控制 */
+.prose img[data-align="left"] {
+  display: block;
+  margin-right: auto;
+  margin-left: 0;
+}
+
+.prose img[data-align="center"] {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.prose img[data-align="right"] {
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+/* 图片宽度：通过 width 属性或 style 控制，确保不超出容器 */
+.prose img[width] {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ============================================================
+   行内代码
+   ============================================================ */
+
+.prose :not(pre) > code {
+  padding: 0.15em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  background-color: var(--color-muted);
+}
+
+/* ============================================================
+   任务列表（markdown-it-task-lists 输出）
+   ============================================================ */
+
+.prose li.task-list-item {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.prose li.task-list-item p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.prose li.task-list-item::before,
+.prose li.task-list-item::marker {
+  content: none;
+  display: none;
+}
+
+.prose li.task-list-item > label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  cursor: pointer;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.prose li.task-list-item .task-list-item-checkbox {
+  flex: 0 0 auto;
+  cursor: pointer;
+  margin-top: 0.15em;
+  width: 1em;
+  height: 1em;
+}
+
+/* 包含任务项的 ul 移除左侧缩进 */
+.prose ul:has(> li.task-list-item) {
+  padding-left: 0;
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+/* ============================================================
+   分割线
+   ============================================================ */
+
+.prose hr {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* ============================================================
+   文件附件卡片（fileNode / file-attachment）
+   阅读端通过 <div class="file-attachment"><a href="...">name</a></div> 渲染
+   ============================================================ */
+
+.prose .file-attachment,
+.file-attachment {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0.875rem;
+  border: 1px solid var(--border);
+  border-radius: 0.625rem;
+  background-color: var(--muted);
+  color: var(--foreground);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition: background-color 0.15s, border-color 0.15s;
+  cursor: pointer;
+  max-width: 480px;
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 0.25rem 0;
+}
+
+.prose .file-attachment a,
+.file-attachment a {
+  color: inherit;
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.prose .file-attachment a:hover,
+.file-attachment a:hover {
+  text-decoration: none;
+}
+
+.prose .file-attachment::before,
+.file-attachment::before {
+  content: "";
+  flex-shrink: 0;
+  width: 1.125rem;
+  height: 1.125rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z'/%3E%3Cpath d='M14 2v4a2 2 0 0 0 2 2h4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.5;
+}
+
+.prose .file-attachment:hover,
+.file-attachment:hover {
+  border-color: var(--primary);
+}
+
+/* 布局控制：half = 一行两个 */
+.file-attachment[data-layout="half"] {
+  display: inline-flex;
+  width: calc(50% - 4px);
+  margin-right: 4px;
+  vertical-align: top;
+}
+
+/* 布局控制：third = 一行三个 */
+.file-attachment[data-layout="third"] {
+  display: inline-flex;
+  width: calc(33.333% - 4px);
+  margin-right: 4px;
+  vertical-align: top;
+}
+
+.dark .prose .file-attachment,
+.dark .file-attachment {
+  background-color: var(--muted);
+}
+
+.dark .prose .file-attachment:hover,
+.dark .file-attachment:hover {
+  background-color: var(--accent);
+}

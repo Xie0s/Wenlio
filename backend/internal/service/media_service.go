@@ -7,6 +7,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"io"
 	"mime/multipart"
 	"net/http"
 	"path/filepath"
@@ -43,8 +44,11 @@ func detectFileMIME(file *multipart.FileHeader) (string, error) {
 	// 读取文件头 512 字节用于 MIME 检测
 	buf := make([]byte, 512)
 	n, err := src.Read(buf)
-	if err != nil && n == 0 {
+	if err != nil && err != io.EOF {
 		return "", err
+	}
+	if n == 0 {
+		return "application/octet-stream", nil
 	}
 
 	detected := http.DetectContentType(buf[:n])

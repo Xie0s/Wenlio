@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -135,7 +136,7 @@ func TestIPRateLimit(t *testing.T) {
 
 	r := gin.New()
 	// 允许每10秒最多3次请求
-	r.Use(IPRateLimit(3, 10*1000*1000*1000)) // 10s in nanoseconds via time.Duration
+	r.Use(IPRateLimit(3, 10*time.Second))
 	r.POST("/verify", func(c *gin.Context) {
 		c.String(200, "ok")
 	})

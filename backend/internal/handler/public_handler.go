@@ -288,7 +288,7 @@ func (h *PublicHandler) GetRawMarkdown(c *gin.Context) {
 	const maxRawSize = 2 * 1024 * 1024
 	content := page.Content
 	if len(content) > maxRawSize {
-		content = content[:maxRawSize] + "\n\n<!-- truncated: content exceeds 2MB limit -->"
+		content = content[:maxRawSize] + "\n\n[Content truncated: exceeds 2MB limit]"
 	}
 
 	// 返回纯文本 Markdown
